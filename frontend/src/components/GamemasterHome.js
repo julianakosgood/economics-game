@@ -1,13 +1,15 @@
 import React from 'react'
+import GameCreation from './game_view_components/GameCreation'
 
 function ViewSelection(props){
     // list of tuples containing the key and button text
-    let viewChoices = [['players', 'Manage by player'], ['games', 'Manage by game']]
+    let viewChoices = [['create', 'Create A New Game'], ['players', 'Manage by player'], ['games', 'Manage by game']]
     const components = viewChoices.map((choice) => {
         return (<button className="button" value={choice[0]} key={choice[0]} onClick={props.updateManagementView}> {choice[1]} </button>)
     })
     return (<div> {components}</div>)
 }
+
 
 function Players(props){
     return (<div> players </div>)
@@ -33,6 +35,8 @@ class GamemasterHome extends React.Component{
             return <Players />
         } else if (stateView === 'games'){
             return <Games />
+        } else if (stateView === 'create'){
+            return <GameCreation />
         } else {
             return <ViewSelection updateManagementView={this.updateManagementView} />
         }

@@ -11,7 +11,7 @@ class Stock(models.Model):
     value = models.FloatField(default=0.00)
     name = models.TextField()
     description = models.TextField()
-    game_instance = models.ForeignKey('game_management.GameInstance', on_delete=models.SET_NULL)
+    game_instance = models.ForeignKey('game_management.GameInstance', on_delete=models.DO_NOTHING)
     # the round the stock belongs to, the round determines the stock value
     round_number = models.IntegerField(default=0)
 
@@ -20,7 +20,7 @@ class PlayerPurchase(models.Model):
     '''
     Links a player purchase to a stock value.
     '''
-    player = models.ForeignKey('resources.User', on_delete=models.SET_NULL)
-    stock = models.ForeignKey('resources.Stock', on_delete=models.SET_NULL)
+    player = models.ForeignKey('resources.User', on_delete=models.DO_NOTHING)
+    stock = models.ForeignKey('resources.Stock', on_delete=models.DO_NOTHING)
     num_owned = models.IntegerField(default=1)
 
