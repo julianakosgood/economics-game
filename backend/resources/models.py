@@ -14,6 +14,13 @@ class Stock(models.Model):
     game_instance = models.ForeignKey('game_management.GameInstance', on_delete=models.DO_NOTHING)
     # the round the stock belongs to, the round determines the stock value
     round_number = models.IntegerField(default=0)
+    risk_rating = models.TextField(default='low')
+    trend_value = models.TextField(default='stable')
+
+    def as_dict(self):
+        fields = self._meta.fields
+        return {field.name: getattr(self, field.name) for field in fields if field.name is not 'game_instance'}
+
 
 
 class PlayerPurchase(models.Model):

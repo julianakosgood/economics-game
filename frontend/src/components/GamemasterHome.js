@@ -36,7 +36,7 @@ class GamemasterHome extends React.Component{
         } else if (stateView === 'games'){
             return <Games />
         } else if (stateView === 'create'){
-            return <GameCreation />
+            return <GameCreation updateManagementView={this.updateManagementView} />
         } else {
             return <ViewSelection updateManagementView={this.updateManagementView} />
         }
