@@ -1,11 +1,19 @@
 import React from 'react'
 import GameCreation from './game_view_components/GameCreation'
+import { Link } from 'react-router-dom'
 
 function ViewSelection(props){
     // list of tuples containing the key and button text
-    let viewChoices = [['create', 'Create A New Game'], ['players', 'Manage by player'], ['games', 'Manage by game']]
+    let viewChoices = [['create', 'Create A New Game'], ['players', 'Manage Players'], ['games', 'Manage Games']]
     const components = viewChoices.map((choice) => {
-        return (<button className="button" value={choice[0]} key={choice[0]} onClick={props.updateManagementView}> {choice[1]} </button>)
+        if (choice[0] === 'games'){
+            return <Link key={choice[0]} to='/gm-views/game-management' className='button is-outlined'> Manage Games </Link>
+        }
+        return (
+            <div className="field" key={choice[0]}>
+        <button className="button is-outlined" value={choice[0]} onClick={props.updateManagementView}> {choice[1]} </button>
+        </div>
+        )
     })
     return (<div> {components}</div>)
 }

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import GameInstance
-from resources.models import User, Stock
+from resources.models import User, Stock, PlayerPurchase
 import random
 from json import loads
 
@@ -50,6 +50,16 @@ def assign_players(request):
 
 def increment_game_round(request):
     pass
+
+
+def get_owned_game_instances(request):
+    '''
+    Returns game instances owned by the passed admin
+    '''
+    gm_username = request.GET.get('gmName')
+    instances = GameInstance.objects.filter(gamemaster__username=gm_username).values()
+    return JsonResponse({'gameInstances': list(instances)})
+
 
 
 def generate_stocks(request):
@@ -124,3 +134,14 @@ def get_available_players(request):
     for player in players:
         del player['password']
     return JsonResponse({'players': players})
+
+
+def get_game_management_data(request):
+    game_id = request.GET.get('gameId')
+    instance = GameInstance.objects.filter(id=game_id).first()
+    players = list(instance.players.values())
+    for player in players:
+        player['stocks'] = [{'stock': purchase.stock.as_dict(), 'num_owned': purchase.num_owned} for purchase in PlayerPurchase.objects.filter(player__id=player['id'])]
+        _ = player.pop('password')
+    stocks = list(Stock.objects.filter(game_instance=instance).values())
+    return JsonResponse({'players': players, 'stocks': stocks})
