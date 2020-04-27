@@ -18,6 +18,20 @@ def create_admin(request):
     pass
 
 
+def increment_game_turn(request):
+    game = GameInstance.objects.filter(id=request.GET.get('gameId')).first()
+    game.current_turn += 1
+    try:
+        for player in game.players.all():
+            player.currency_balance += game.default_money_grant
+            player.save()
+        game.save()
+    except Exception as e:
+        print(e)
+        return JsonResponse({'success': False})
+    return JsonResponse({'success': True})
+
+
 def create_game_instance(request):
     # set a game master User
     game_master = User.objects.filter(username=request.GET.get('username')).first()
@@ -45,10 +59,6 @@ def save_new_game_instance(request):
 
 
 def assign_players(request):
-    pass
-
-
-def increment_game_round(request):
     pass
 
 

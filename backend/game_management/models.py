@@ -5,7 +5,7 @@ from django.db import models
 class GameInstance(models.Model):
     gamemaster = models.ForeignKey('resources.User', on_delete=models.DO_NOTHING, related_name='gamemaster')
     players = models.ManyToManyField('resources.User', related_name='players')
-    default_money_grant = models.FloatField(default=0.0)
+    default_money_grant = models.FloatField(default=100.0)
     maxTurns = models.IntegerField(default=15)
     current_turn = models.IntegerField(default=0)
 
