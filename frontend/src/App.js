@@ -8,6 +8,9 @@ import HomePage from './components/HomePage'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {UserContext} from './contexts/UserContext';
 import PrivateRoute from './components/util_wrappers/PrivateRoute'
+import { gameManagement } from './request_utils/request_urls';
+import GameManagement from './components/game_view_components/GameManagement'
+import PlayerHome from './components/game_view_components/PlayerHome'
 
 class App extends React.Component {
     constructor(props){
@@ -18,8 +21,8 @@ class App extends React.Component {
             this.setState((state) => ({
                 // flip current auth value. simple way to fake logging in and out
                 isAuth: (state.isAuth ? false : true),
-                userName: (state.userName.length > 0 ? '' : 'user name'),
-                isGm: true
+                userName: (state.userName.length > 0 ? '' : 'player_1'),
+                isGm: false
             }));
         };
         // default state for user context.
@@ -41,7 +44,13 @@ class App extends React.Component {
                         <PrivateRoute path="/user-settings" isAuth={this.state.isAuth}>
                             <UserSettings />
                         </PrivateRoute>
-                        <PrivateRoute Path="/" isAuth={this.state.isAuth}>
+                        <PrivateRoute path="/gm-views/game-management" userName={this.state.userName} isAuth={this.state.isAuth}>
+                            <GameManagement userName={this.state.userName} />
+                        </PrivateRoute>
+                        <PrivateRoute path="/player-home" userName={this.state.userName} isAuth={this.state.isAuth}>
+                            <PlayerHome userName={this.state.userName} />
+                        </PrivateRoute>
+                        <PrivateRoute path="/" isAuth={this.state.isAuth}>
                             <UserContext.Provider value={this.state}>
                                 <HomePage />
                             </UserContext.Provider>
